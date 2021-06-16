@@ -1,34 +1,26 @@
 package zucc.edu.bigdata.bean.feature;
 
-public class CourseFeature {
+public class CourseVideoFeature {
 
-    private double videoCnt = 0;           // 视频个数
+    private int videoCnt = 0;           // 视频个数
     private double videoDuration = 0;      // 视频内容长度
-    private double problemCnt = 0;           // 题目个数
 
 
-    public CourseFeature() {
+    public CourseVideoFeature() {
 
     }
-    public CourseFeature( double videoCnt, double videoDuration) {
+    public CourseVideoFeature(int videoCnt, double videoDuration) {
         this.videoCnt = videoCnt;
         this.videoDuration = videoDuration;
-        this.problemCnt = problemCnt;
     }
 
-    public double getProblemCnt() {
-        return problemCnt;
-    }
 
-    public void setProblemCnt(double problemCnt) {
-        this.problemCnt = problemCnt;
-    }
 
     public double getVideoCnt() {
         return videoCnt;
     }
 
-    public void setVideoCnt(double videoCnt) {
+    public void setVideoCnt(int videoCnt) {
         this.videoCnt = videoCnt;
     }
 
@@ -45,7 +37,6 @@ public class CourseFeature {
         return "CourseFeature{" +
                 ", videoCnt=" + videoCnt +
                 ", videoDuration=" + videoDuration +
-                ", problemCnt=" + problemCnt +
                 '}';
     }
 }
