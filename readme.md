@@ -40,7 +40,7 @@
     + 表名: "course"
     + 列簇: "problem"
     + 列: "content" "courseId"
-    
+    - And
     + 表名: "course"
     + 列簇: "problemActivity"
     + 列: "problemId" "studentId" "courseId" "time" "content" "label"
