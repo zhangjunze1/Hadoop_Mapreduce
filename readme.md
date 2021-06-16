@@ -36,7 +36,15 @@
     + 表名: "problem"
     + 列簇: "times"
     + 列: "wrong" (每个问题的答题错误总次数)
- 
++ ProblemActivityJob : 处理 problem_activity.json 数据
+    + 表名: "course"
+    + 列簇: "problem"
+    + 列: "content" "courseId"
+    
+    + 表名: "course"
+    + 列簇: "problemActivity"
+    + 列: "problemId" "studentId" "courseId" "time" "content" "label"
+    
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -51,6 +59,8 @@
 6. CourseJob2
 7. CourseJob3
 
+### 
+8. ProblemActivityJob
 -------------
 
 ### HBase表
@@ -72,7 +82,8 @@
     <caption>course</caption>
     <tr>
         <td colspan="2" align="center">video</td>
-        <td colspan="3" align="center">problem</td>
+        <td colspan="5" align="center">problem</td>
+        <td colspan="6" align="center">problemActivity</td>
     </tr>
         <tr>
         <td>videoCount</td>
@@ -80,6 +91,14 @@
         <td>count</td>
         <td>allTimes</td>
         <td>rightTimes</td>
+        <td>content</td>
+        <td>courseId</td>
+        <td>problemId</td>
+        <td>studentId</td>
+        <td>courseId</td>
+        <td>time</td>
+        <td>content</td>
+        <td>label</td>
    </tr>
 </table>
 

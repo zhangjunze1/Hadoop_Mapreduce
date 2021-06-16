@@ -6,6 +6,7 @@ public class CourseFeature {
     private double videoDuration = 0;      // 视频内容长度
     private double problemCnt = 0;           // 题目个数
 
+
     public CourseFeature() {
 
     }
