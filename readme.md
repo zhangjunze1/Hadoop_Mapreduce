@@ -53,7 +53,7 @@
 
 -------------
 
-### HBase表格
+### HBase表
 
 #### 1.Video
 <table>
@@ -87,7 +87,7 @@
 <table>
     <caption>problem</caption>
     <tr>
-        <td align="center">times</td>
+        <td colspan="3" align="center">times</td>
     </tr>
         <tr>
         <td>all</td>
