@@ -14,6 +14,7 @@ public class ProblemActivity {
     private String course_id;       // 每道题所属课程id
     private double time;            // 学生的本次行为的时间
     private String content;         // 题目的内容
+    private String concept;         // 题目的知识点
     private int label;           // 学生每道题的正确与否
 
     public ProblemActivity() {
@@ -27,7 +28,16 @@ public class ProblemActivity {
         this.course_id = problemActivity.course_id;
         this.time = problemActivity.time;
         this.content = problemActivity.content;
+        this.concept = problemActivity.concept;
         this.label = problemActivity.label;
+    }
+
+    public String getConcept() {
+        return concept;
+    }
+
+    public void setConcept(String concept) {
+        this.concept = concept;
     }
 
     public String getStudent_id() {
@@ -95,6 +105,7 @@ public class ProblemActivity {
                 ", course_id=" + course_id +
                 ", time=" + time +
                 ", content=" + content +
+                ", concept=" + concept +
                 ", label=" + label +
                 '}';
     }

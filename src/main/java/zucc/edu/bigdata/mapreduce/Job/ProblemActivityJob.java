@@ -37,6 +37,7 @@ public class ProblemActivityJob extends Configured implements Tool {
         private byte[] column_courseId = Bytes.toBytes("courseId"); // 列
         private byte[] column_time = Bytes.toBytes("time"); // 列
         private byte[] column_content = Bytes.toBytes("content"); // 列
+        private byte[] column_concept = Bytes.toBytes("concept"); // 列
         private byte[] column_label = Bytes.toBytes("label"); // 列
 
         @Override
@@ -52,11 +53,12 @@ public class ProblemActivityJob extends Configured implements Tool {
             put.addColumn(activity_family, column_courseId, Bytes.toBytes(problemActivity.getCourse_id()));
             put.addColumn(activity_family, column_time, Bytes.toBytes(problemActivity.getTime()));
             put.addColumn(activity_family, column_content, Bytes.toBytes(problemActivity.getContent()));
+            put.addColumn(activity_family, column_concept, Bytes.toBytes(problemActivity.getConcept()));
             put.addColumn(activity_family, column_label, Bytes.toBytes(problemActivity.getLabel()));
 
             // course--problem添加
             put.addColumn(problem_family, column_courseId, Bytes.toBytes(problemActivity.getCourse_id()));
-            put.addColumn(problem_family, column_content, Bytes.toBytes(problemActivity.getContent()));
+            put.addColumn(problem_family, column_concept, Bytes.toBytes(problemActivity.getConcept()));
 
             context.write(new ImmutableBytesWritable(row), put);
         }

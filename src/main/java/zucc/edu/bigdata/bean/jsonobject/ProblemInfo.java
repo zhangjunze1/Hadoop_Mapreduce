@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ProblemInfo {
     private String detail;               // 题干及其选项
-    private List<String> concept = new ArrayList<String>();         // 题目考察知识点
+    private String concept ;         // 题目考察知识点
     private String problem_id ;            // 题目Id
 
     public ProblemInfo() {}
@@ -31,11 +31,11 @@ public class ProblemInfo {
         this.detail = detail;
     }
 
-    public List<String> getConcept() {
+    public String getConcept() {
         return concept;
     }
 
-    public void setConcept(List<String> concept) {
+    public void setConcept(String concept) {
         this.concept = concept;
     }
 

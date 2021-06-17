@@ -43,8 +43,11 @@
     - And
     + 表名: "course"
     + 列簇: "problemActivity"
-    + 列: "problemId" "studentId" "courseId" "time" "content" "label"
-    
+    + 列: "problemId" "studentId" "courseId" "time" "content" "label" "concept"
++ ProblemInfoJob : 处理problem_info.json 数据 对应的题目概念
+    + 表名: "problem"
+    + 列簇: "info"
+    + 列: "concept" 
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -61,6 +64,7 @@
 
 ### 8
 8. ProblemActivityJob
+9. ProblemInfoJob
 -------------
 
 ### HBase表
@@ -83,7 +87,7 @@
     <tr>
         <td colspan="2" align="center">video</td>
         <td colspan="5" align="center">problem</td>
-        <td colspan="6" align="center">problemActivity</td>
+        <td colspan="7" align="center">problemActivity</td>
     </tr>
         <tr>
         <td>videoCount</td>
@@ -98,6 +102,7 @@
         <td>courseId</td>
         <td>time</td>
         <td>content</td>
+        <td>concept</td>
         <td>label</td>
    </tr>
 </table>
@@ -107,10 +112,12 @@
     <caption>problem</caption>
     <tr>
         <td colspan="3" align="center">times</td>
+        <td colspan="1" align="center">info</td>
     </tr>
         <tr>
         <td>all</td>
         <td>right</td>
         <td>wrong</td>
+        <td>concept</td>
    </tr>
 </table>
