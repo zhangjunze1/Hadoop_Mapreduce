@@ -12,7 +12,7 @@ public class ProblemActivity {
     private String act_id;          // 做题行为id
     private String problem_id;      // 题目id
     private String course_id;       // 每道题所属课程id
-    private double time;            // 学生的本次行为的时间
+    private String time;            // 学生的本次行为的时间
     private String content;         // 题目的内容
     private String concept;         // 题目的知识点
     private int label;           // 学生每道题的正确与否
@@ -72,11 +72,11 @@ public class ProblemActivity {
         this.course_id = course_id;
     }
 
-    public double getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(double time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -88,7 +88,7 @@ public class ProblemActivity {
         this.content = content;
     }
 
-    public double getLabel() {
+    public int getLabel() {
         return label;
     }
 

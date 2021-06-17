@@ -7,6 +7,8 @@
 + ProblemWrongActTrainDriver : 求每道题对应的答题错误次数
 + ProblemRightActTrainDriver : 求每道题对应的答题正确次数
 + PreRequistiteDriver : 每个概念的先修概念统计
++ StudentConceptAllDriver : 学生的某个概念的总答题数目
++ StudentConceptDriver : 学生的某个概念的总答题数目的正确个数
 
 ## Job
 + VideoInfoJob : 处理视频 Video_info.json 中的 各个视频长度 存入HBase 
@@ -48,7 +50,11 @@
 + ProblemInfoJob : 处理problem_info.json 数据 对应的题目概念
     + 表名: "problem"
     + 列簇: "info"
-    + 列: "concept" 
+    + 列: "concept"      
++ ProblemRequistiteJob : 处理prerequisite.json 的数据获得 先修先修概念
+    + 表名: "problem"
+    + 列簇: "info"
+    + 列: "preConcept" : 内部格式为：例如"数据结构 树 B树 搜索 二叉树 红黑树 "(以空格分割)
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -66,6 +72,7 @@
 ### 8
 8. ProblemActivityJob
 9. ProblemInfoJob
+10. ProblemRequistiteJob
 -------------
 
 ### HBase表
@@ -77,7 +84,7 @@
         <td align="center">info</td>    
     </tr>
         <tr>
-        <td>duration</td>
+        <td align="center">duration</td>
    </tr>
 </table>
 
@@ -91,20 +98,20 @@
         <td colspan="7" align="center">problemActivity</td>
     </tr>
         <tr>
-        <td>videoCount</td>
-        <td>videoDuration</td>
-        <td>count</td>
-        <td>allTimes</td>
-        <td>rightTimes</td>
-        <td>content</td>
-        <td>courseId</td>
-        <td>problemId</td>
-        <td>studentId</td>
-        <td>courseId</td>
-        <td>time</td>
-        <td>content</td>
-        <td>concept</td>
-        <td>label</td>
+        <td align="center">videoCount</td>
+        <td align="center">videoDuration</td>
+        <td align="center">count</td>
+        <td align="center">allTimes</td>
+        <td align="center">rightTimes</td>
+        <td align="center">content</td>
+        <td align="center">courseId</td>
+        <td align="center">problemId</td>
+        <td align="center">studentId</td>
+        <td align="center">courseId</td>
+        <td align="center">time</td>
+        <td align="center">content</td>
+        <td align="center">concept</td>
+        <td align="center">label</td>
    </tr>
 </table>
 
@@ -116,10 +123,10 @@
         <td colspan="2" align="center">info</td>
     </tr>
         <tr>
-        <td>all</td>
-        <td>right</td>
-        <td>wrong</td>
-        <td>concept</td>
-        <td>preConcept</td>
+        <td align="center">all</td>
+        <td align="center">right</td>
+        <td align="center">wrong</td>
+        <td align="center">concept</td>
+        <td align="center">preConcept</td>
    </tr>
 </table>

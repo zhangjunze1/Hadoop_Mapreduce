@@ -21,6 +21,7 @@ public class PreRequistiteReducer extends Reducer<Text, Text, Text, Text> {
             sum += value;
             sum += " ";
         }
+        sum = sum.substring(0, sum.length() - 1);// 删除多余的空格
         outV.set(sum);
         context.write(key,outV);
 

@@ -64,7 +64,7 @@ public class ProblemRequistiteJob  extends Configured implements Tool {
                 sum += value;
                 sum += " ";
             }
-
+            sum = sum.substring(0, sum.length() - 1);// 删除多余的空格
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
             put.addColumn(problem_family,column_preContent,Bytes.toBytes(sum));
 
