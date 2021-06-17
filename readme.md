@@ -6,6 +6,7 @@
 + ProblemAllActTrainDriver : 求每道题对应的答题次数
 + ProblemWrongActTrainDriver : 求每道题对应的答题错误次数
 + ProblemRightActTrainDriver : 求每道题对应的答题正确次数
++ PreRequistiteDriver : 每个概念的先修概念统计
 
 ## Job
 + VideoInfoJob : 处理视频 Video_info.json 中的 各个视频长度 存入HBase 
@@ -112,12 +113,13 @@
     <caption>problem</caption>
     <tr>
         <td colspan="3" align="center">times</td>
-        <td colspan="1" align="center">info</td>
+        <td colspan="2" align="center">info</td>
     </tr>
         <tr>
         <td>all</td>
         <td>right</td>
         <td>wrong</td>
         <td>concept</td>
+        <td>preConcept</td>
    </tr>
 </table>
