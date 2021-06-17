@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class StudentConceptAllMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
-    // outK studentId + problemId + concept
+    // outK studentId + concept
     private Text student_idAnd = new Text();
 
     // outV 答题情况总次数
