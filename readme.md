@@ -58,7 +58,7 @@
 + StudentConceptJob1: problem_activity.json的数据
     + 表名: "student"
     + 列簇: "info"
-    + 列 : "conceptRate" 
+    + 列 : "conceptGrasp" "conceptAlmostGrasp" "conceptNoGrasp"
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -78,6 +78,7 @@
 9. ProblemInfoJob
 10. ProblemRequistiteJob
 11. StudentConceptJob1
+
 -------------
 
 ### HBase表
