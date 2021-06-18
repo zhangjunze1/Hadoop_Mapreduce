@@ -55,6 +55,10 @@
     + 表名: "problem"
     + 列簇: "info"
     + 列: "preConcept" : 内部格式为：例如"数据结构 树 B树 搜索 二叉树 红黑树 "(以空格分割)
++ StudentConceptJob1: problem_activity.json的数据
+    + 表名: "student"
+    + 列簇: "info"
+    + 列 : "conceptRate" 
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -73,6 +77,7 @@
 8. ProblemActivityJob
 9. ProblemInfoJob
 10. ProblemRequistiteJob
+11. StudentConceptJob1
 -------------
 
 ### HBase表
@@ -128,5 +133,18 @@
         <td align="center">wrong</td>
         <td align="center">concept</td>
         <td align="center">preConcept</td>
+   </tr>
+</table>
+
+#### 4.Student
+<table>
+    <caption>student</caption>
+    <tr>
+        <td colspan="3" align="center">info</td>    
+    </tr>
+        <tr>
+        <td align="center">conceptGrasp</td>
+        <td align="center">conceptAlmostGrasp</td>
+        <td align="center">conceptNoGrasp</td>
    </tr>
 </table>

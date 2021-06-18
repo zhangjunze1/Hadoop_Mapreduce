@@ -20,6 +20,8 @@ import org.apache.hadoop.util.ToolRunner;
 import zucc.edu.bigdata.bean.jsonobject.ProblemActivity;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 学生答对的题目的知识点 情况
@@ -27,7 +29,7 @@ import java.io.IOException;
 public class StudentConceptJob1 extends Configured implements Tool {
 
 
-    static class StudentConceptMapper1 extends Mapper<LongWritable, Text, Text, Text>{
+    static class StudentConceptMapper1 extends Mapper<LongWritable, Text, Text, Text> {
 
         // outK studentId
         private Text student_id = new Text();
@@ -42,10 +44,10 @@ public class StudentConceptJob1 extends Configured implements Tool {
             String sum = new String("");
             student_id.set(problemActivity.getStudent_id());
 
-            sum = problemActivity.getConcept().substring(2,problemActivity.getConcept().length()-2) + " " + problemActivity.getLabel();
+            sum = problemActivity.getConcept().substring(2, problemActivity.getConcept().length() - 2) + " " + problemActivity.getLabel();
 
             conceptAndLabel.set(sum);
-            context.write(student_id,conceptAndLabel);
+            context.write(student_id, conceptAndLabel);
         }
     }
 
@@ -53,35 +55,92 @@ public class StudentConceptJob1 extends Configured implements Tool {
 
         private byte[] family_info = Bytes.toBytes("info");
 
-        private byte[] column_conceptRate = Bytes.toBytes("conceptRate");
+        private byte[] column_conceptGrasp = Bytes.toBytes("conceptGrasp");
+        private byte[] column_conceptAlmostGrasp = Bytes.toBytes("conceptAlmostGrasp");
+        private byte[] column_conceptNoGrasp = Bytes.toBytes("conceptNoGrasp");
 
         private Text VconceptAndLabel = new Text();
 
-        private int label ;
+        private int label;
         // 存储String 的concept + label
-        String stringValue = "";
+        private String stringValue = "";
+        // concept
+        private String concept= "";
         // 最后一位 答题正确与否
-        String stringlabel = "";
+        private String stringlabel = "";
         // 总次数
-        int allLabel = 0;
-        int rightLabel = 0;
+        private int allLabel = 0;
+        private int rightLabel = 0;
+
+        private Map<String, String> map = new HashMap<String, String>();
+
+        private String TotalGrasp = "";
+        private String almostGrasp = "";
+        private String noGrasp = "";
+        private Text outV = new Text();
 
         @Override
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+            label = 0;
+            stringValue ="";
+            stringlabel ="";
+            concept="";
+            allLabel=0;
+            rightLabel=0;
+            map.clear();
+            TotalGrasp = "";
+            almostGrasp ="";
+
             for (Text value : values) {
                 String[] words = value.toString().split(" ");
+                concept = words[0];
                 stringValue = value.toString();
-                stringlabel = stringValue.substring(stringValue.length()-1, stringValue.length());
-                if (Integer.valueOf(stringlabel)==1){
-                    allLabel++;
-                    rightLabel++;
-                }else {
-                    allLabel++;
+                stringlabel = words[1];
+
+                if (Integer.valueOf(stringlabel) == 1) {
+                    allLabel = 1;
+                    rightLabel = 1;
+                } else {
+                    allLabel = 1;
+                    rightLabel = 0;
                 }
-                VconceptAndLabel.set(words[0]+" "+allLabel+" "+rightLabel);
+                // 没有 这个concept就存值为1
+                if (!map.containsKey(key.toString()+ " "+ concept)) {
+                    map.put(key.toString()+ " "+ concept, concept + " " + String.valueOf(allLabel) + " " + String.valueOf(rightLabel));
+                } else {
+                    String[] threeParts = map.get(key.toString()+ " "+ concept).split(" ");
+                    allLabel = Integer.valueOf(threeParts[1]) + allLabel;
+                    rightLabel = Integer.valueOf(threeParts[2]) + rightLabel;
+                    map.put(key.toString()+ " "+ concept, concept + " " + String.valueOf(allLabel) + " " +  String.valueOf(rightLabel));
+                }
             }
+
+            for (String mapkey : map.keySet()) {
+                String[] temp3 = map.get(mapkey).split(" ");
+
+                if ((Integer.valueOf(temp3[2])*100) / Integer.valueOf(temp3[1]) >= 80) {
+                    TotalGrasp = TotalGrasp + temp3[0] + " ";
+                } else if ((Integer.valueOf(temp3[2])*100) / Integer.valueOf(temp3[1]) >= 50) {
+                    almostGrasp = almostGrasp + temp3[0] + " ";
+                }else {
+                    noGrasp = noGrasp + temp3[0] + " ";
+                }
+
+            }
+            if (!TotalGrasp.equals("")){
+                TotalGrasp = TotalGrasp.substring(0, TotalGrasp.length() - 1);// 删除多余的空格
+            }
+            if (!almostGrasp.equals("")){
+                almostGrasp = almostGrasp.substring(0, almostGrasp.length() - 1);// 删除多余的空格
+            }
+            if (!noGrasp.equals("")){
+                noGrasp = noGrasp.substring(0, noGrasp.length() - 1);// 删除多余的空格
+            }
+
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
-            put.addColumn(family_info,column_conceptRate,Bytes.toBytes(String.valueOf(VconceptAndLabel)));
+            put.addColumn(family_info, column_conceptGrasp, Bytes.toBytes(TotalGrasp));
+            put.addColumn(family_info, column_conceptAlmostGrasp, Bytes.toBytes(almostGrasp));
+            put.addColumn(family_info, column_conceptNoGrasp, Bytes.toBytes(noGrasp));
         }
     }
 
