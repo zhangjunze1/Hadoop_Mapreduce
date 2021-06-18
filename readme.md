@@ -58,7 +58,11 @@
 + StudentConceptJob1: problem_activity.json的数据
     + 表名: "student"
     + 列簇: "info"
-    + 列 : "conceptGrasp" "conceptAlmostGrasp" "conceptNoGrasp"
+    + 列 : "conceptGrasp" "conceptAlmostGrasp" "conceptNoGrasp" 
+    (掌握的：格式"U_10429140	堆 复杂度 数据结构 树 二叉树 哈希 排序 B树 向量")
+    (会一点的：格式"U_1043017	序列 二叉树 复杂度 树 排序 栈")
+    (未掌握的：格式"U_10438365	树 排序 伸展树 二叉树 数据结构 栈 复杂度")
+
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
