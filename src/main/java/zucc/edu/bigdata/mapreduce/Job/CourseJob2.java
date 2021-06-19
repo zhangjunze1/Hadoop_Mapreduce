@@ -41,8 +41,11 @@ public class CourseJob2 extends Configured implements Tool {
             for (String item : course.getItem()) {
                 if (item.substring(0, 1).equals("P")) {
                     byte[] res = hbase.get(TableName.valueOf("problem"), Bytes.toBytes(item), Bytes.toBytes("times"), Bytes.toBytes("all"));
-                    outV.set(Bytes.toDouble(res));
-                    context.write(outK, outV);
+                    if (res!=null){
+                        outV.set(Bytes.toDouble(res));
+                        context.write(outK, outV);
+                    }
+
                 }
             }
         }
