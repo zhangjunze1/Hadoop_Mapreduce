@@ -31,7 +31,7 @@ import java.io.IOException;
 public class VideoInfoJob extends Configured implements Tool {
 
     static class VideoInfoMapper extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put> {
-        private byte[] FAMILY = Bytes.toBytes("video"); // 列簇
+        private byte[] FAMILY = Bytes.toBytes("info"); // 列簇
         private byte[] QUALIFIER = Bytes.toBytes("duration"); // 列
         private double AVERAGE_DURATION = 425.672;  // 得出过程由AverageVideo得出,补充空数据
 
