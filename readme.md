@@ -1,3 +1,10 @@
+# 大数据计算与技术
++ 框架: Hdfs + Mapreduce + Hbase + Zookeeper + Yarn 
++ 后端框架 : SpringBoot + Mybatis-plus + Swagger2-UI + Knife4j
++ 前端框架 : Vue + elementUI + Echart
+
++ 忠告 PS:非常重要  如需处理的数据量小 请使用Spark框架 以及 Hive或者MongoDB数据库
+
 ## MapReduce
 
 + CourseProblemDriver : 每个课程中的问题数量
