@@ -176,7 +176,7 @@ public class StudentConceptJob1 extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {
         //两个参数一个是Hadoop 中文件的路径    一个是要传入数据的表名
-        String arg1 = "/dataset/problem_activity";
+        String arg1 = "/dataset/problem_activity.json";
         String arg2 = "student";
         int status = ToolRunner.run(HBaseConfiguration.create(), new StudentConceptJob1(), new String[]{arg1, arg2});
         System.exit(status);
