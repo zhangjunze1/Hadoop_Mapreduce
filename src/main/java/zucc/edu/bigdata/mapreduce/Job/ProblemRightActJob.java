@@ -68,7 +68,7 @@ public class ProblemRightActJob extends Configured implements Tool {
 
             Put put = new Put(row);
             put.addColumn(FAMILY, TIMES_RIGHT, Bytes.toBytes(sum));
-
+            context.write(NullWritable.get(), put);
         }
     }
 

@@ -70,6 +70,7 @@ public class CourseJob2 extends Configured implements Tool {
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
             put.addColumn(family,column_problemCnt,Bytes.toBytes(count));
             put.addColumn(family,column_problemAllTimes,Bytes.toBytes(allTimes));
+            context.write(NullWritable.get(), put);
         }
     }
 

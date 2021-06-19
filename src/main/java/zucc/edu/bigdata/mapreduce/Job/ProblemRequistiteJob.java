@@ -6,23 +6,19 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.apache.hadoop.yarn.webapp.hamlet2.Hamlet;
 import zucc.edu.bigdata.bean.jsonobject.PreRequisite;
-import zucc.edu.bigdata.bean.jsonobject.ProblemBehavior;
+
 
 import java.io.IOException;
 
@@ -32,7 +28,7 @@ import java.io.IOException;
 
 public class ProblemRequistiteJob  extends Configured implements Tool {
 
-    static class ProblemRequistiteMapper extends Mapper<Text, Text, Text, Text> {
+    static class ProblemRequistiteMapper extends Mapper<LongWritable, Text, Text, Text> {
 
         // outK 后修
         private Text concept_B = new Text();
@@ -65,9 +61,9 @@ public class ProblemRequistiteJob  extends Configured implements Tool {
                 sum += " ";
             }
             sum = sum.substring(0, sum.length() - 1);// 删除多余的空格
-            Put put = new Put(Bytes.toBytes(String.valueOf(key)));
+            Put put = new Put(Bytes.toBytes(key.toString()));
             put.addColumn(problem_family,column_preContent,Bytes.toBytes(sum));
-
+            context.write(NullWritable.get(), put);
         }
     }
 

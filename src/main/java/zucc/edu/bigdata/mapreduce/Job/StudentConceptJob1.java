@@ -141,6 +141,7 @@ public class StudentConceptJob1 extends Configured implements Tool {
             put.addColumn(family_info, column_conceptGrasp, Bytes.toBytes(TotalGrasp));
             put.addColumn(family_info, column_conceptAlmostGrasp, Bytes.toBytes(almostGrasp));
             put.addColumn(family_info, column_conceptNoGrasp, Bytes.toBytes(noGrasp));
+            context.write(NullWritable.get(), put);
         }
     }
 

@@ -76,6 +76,7 @@ public class CourseJob extends Configured implements Tool {
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
             put.addColumn(family,column_videoCnt,Bytes.toBytes(count));
             put.addColumn(family,column_videoDuration,Bytes.toBytes(duration));
+            context.write(NullWritable.get(), put);
         }
     }
 
