@@ -9,10 +9,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -29,11 +26,13 @@ import java.io.IOException;
  */
 public class CourseJob3 extends Configured implements Tool {
 
-    static class CourseMapper3 extends Mapper<LongWritable, Text, Text, IntWritable> {
+    static class CourseMapper3 extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         /** outK --> course_id **/
-        /** outV --> 从hbase中取出来的 problem的答题正确次数 二进制数据 **/
+        /**
+         * outV --> 从hbase中取出来的 problem的答题正确次数 二进制数据
+         **/
         private Text outK = new Text();
-        private IntWritable outV = new IntWritable();
+        private DoubleWritable outV = new DoubleWritable();
         private HbaseClient hbase = new HbaseClient();
 
         @Override
@@ -45,29 +44,29 @@ public class CourseJob3 extends Configured implements Tool {
             for (String item : course.getItem()) {
                 if (item.substring(0, 1).equals("P")) {
                     byte[] res = hbase.get(TableName.valueOf("problem"), Bytes.toBytes(item), Bytes.toBytes("times"), Bytes.toBytes("right"));
-                    outV.set(Bytes.toInt(res));
+                    outV.set(Bytes.toDouble(res));
                     context.write(outK, outV);
                 }
             }
         }
     }
 
-    static class CourseReducer3 extends TableReducer<Text, IntWritable, NullWritable> {
+    static class CourseReducer3 extends TableReducer<Text, DoubleWritable, NullWritable> {
 
         private byte[] family = Bytes.toBytes("problem");
 
         private byte[] column_problemRightTimes = Bytes.toBytes("rightTimes");
 
         @Override
-        protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-            int rightTimes = 0;
+        protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+            double rightTimes = 0;
 
-            for (IntWritable value : values) {
+            for (DoubleWritable value : values) {
                 rightTimes += value.get();
             }
 
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
-            put.addColumn(family,column_problemRightTimes,Bytes.toBytes(rightTimes));
+            put.addColumn(family, column_problemRightTimes, Bytes.toBytes(rightTimes));
             context.write(NullWritable.get(), put);
         }
     }
@@ -90,9 +89,9 @@ public class CourseJob3 extends Configured implements Tool {
 
         job.setMapperClass(CourseMapper3.class);
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+        job.setMapOutputValueClass(DoubleWritable.class);
 
-        TableMapReduceUtil.initTableReducerJob(tableName, CourseReducer3.class,job);
+        TableMapReduceUtil.initTableReducerJob(tableName, CourseReducer3.class, job);
         job.setNumReduceTasks(1);
 
         return (job.waitForCompletion(true) ? 0 : 1);

@@ -33,9 +33,11 @@ import java.io.IOException;
 public class CourseJob extends Configured implements Tool {
 
 
-    static class CourseMapper extends Mapper<LongWritable, Text, Text, DoubleWritable>{
+    static class CourseMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         /** outK --> course_id **/
-        /** outV --> 从hbase中取出来的二进制数据 **/
+        /**
+         * outV --> 从hbase中取出来的二进制数据
+         **/
         private Text outK = new Text();
         private DoubleWritable outV = new DoubleWritable();
         private HbaseClient hbase = new HbaseClient();
@@ -56,7 +58,7 @@ public class CourseJob extends Configured implements Tool {
         }
     }
 
-    static class CourseReducer extends TableReducer<Text, DoubleWritable, NullWritable>{
+    static class CourseReducer extends TableReducer<Text, DoubleWritable, NullWritable> {
         //
         private byte[] family = Bytes.toBytes("video");
 
@@ -74,8 +76,8 @@ public class CourseJob extends Configured implements Tool {
             }
 
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
-            put.addColumn(family,column_videoCnt,Bytes.toBytes(count));
-            put.addColumn(family,column_videoDuration,Bytes.toBytes(duration));
+            put.addColumn(family, column_videoCnt, Bytes.toBytes(count));
+            put.addColumn(family, column_videoDuration, Bytes.toBytes(duration));
             context.write(NullWritable.get(), put);
         }
     }
@@ -100,7 +102,7 @@ public class CourseJob extends Configured implements Tool {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(DoubleWritable.class);
 
-        TableMapReduceUtil.initTableReducerJob(tableName,CourseReducer.class,job);
+        TableMapReduceUtil.initTableReducerJob(tableName, CourseReducer.class, job);
         job.setNumReduceTasks(1);
 
         return (job.waitForCompletion(true) ? 0 : 1);

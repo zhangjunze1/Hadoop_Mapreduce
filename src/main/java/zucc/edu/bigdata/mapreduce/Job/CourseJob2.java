@@ -19,18 +19,17 @@ import zucc.edu.bigdata.bean.jsonobject.Course;
 import zucc.edu.bigdata.tools.HbaseClient;
 
 import java.io.IOException;
-
 /**
  * 处理 课程中的每个问题 题目的个数 题目总回答次数  存入HBase
  * 获取的是 course_info.json的数据
  */
 public class CourseJob2 extends Configured implements Tool {
 
-    static class CourseMapper2 extends Mapper<LongWritable, Text, Text, IntWritable> {
+    static class CourseMapper2 extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         /** outK --> course_id **/
         /** outV --> 从hbase中取出来的 problem的答题次数 二进制数据 **/
         private Text outK = new Text();
-        private IntWritable outV = new IntWritable();
+        private DoubleWritable outV = new DoubleWritable();
         private HbaseClient hbase = new HbaseClient();
 
         @Override
@@ -42,7 +41,7 @@ public class CourseJob2 extends Configured implements Tool {
             for (String item : course.getItem()) {
                 if (item.substring(0, 1).equals("P")) {
                     byte[] res = hbase.get(TableName.valueOf("problem"), Bytes.toBytes(item), Bytes.toBytes("times"), Bytes.toBytes("all"));
-                    outV.set(Bytes.toInt(res));
+                    outV.set(Bytes.toDouble(res));
                     context.write(outK, outV);
                 }
             }
@@ -50,7 +49,7 @@ public class CourseJob2 extends Configured implements Tool {
     }
 
 
-    static class CourseReducer2 extends TableReducer<Text, IntWritable, NullWritable> {
+    static class CourseReducer2 extends TableReducer<Text, DoubleWritable, NullWritable> {
 
         private byte[] family = Bytes.toBytes("problem");
 
@@ -58,11 +57,11 @@ public class CourseJob2 extends Configured implements Tool {
         private byte[] column_problemAllTimes = Bytes.toBytes("allTimes");
 
         @Override
-        protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-            int allTimes = 0;
-            int count = 0;
+        protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+            double allTimes = 0;
+            double count = 0;
 
-            for (IntWritable value : values) {
+            for (DoubleWritable value : values) {
                 count += 1;
                 allTimes += value.get();
             }
@@ -92,7 +91,7 @@ public class CourseJob2 extends Configured implements Tool {
 
         job.setMapperClass(CourseMapper2.class);
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+        job.setMapOutputValueClass(DoubleWritable.class);
 
         TableMapReduceUtil.initTableReducerJob(tableName, CourseReducer2.class,job);
         job.setNumReduceTasks(1);
