@@ -24,12 +24,12 @@ import java.io.IOException;
  */
 public class ProblemAllActJob extends Configured implements Tool {
 
-    static class ProblemAllActMapper extends Mapper<LongWritable, Text, Text, IntWritable>{
+    static class ProblemAllActMapper extends Mapper<LongWritable, Text, Text, DoubleWritable>{
 
         // MapOutK
         private Text problem_id = new Text();
         // MapOutV
-        private IntWritable lable = new IntWritable(1);
+        private DoubleWritable lable = new DoubleWritable(1);
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -39,19 +39,20 @@ public class ProblemAllActJob extends Configured implements Tool {
         }
     }
 
-    static class ProblemAllActReducer extends TableReducer<Text, IntWritable, NullWritable> {
+    static class ProblemAllActReducer extends TableReducer<Text, DoubleWritable, NullWritable> {
         private byte[] FAMILY = Bytes.toBytes("times"); // 列簇
         private byte[] TIMES_ALL = Bytes.toBytes("all"); // 列
         private byte[] TIMES_RIGHT = Bytes.toBytes("right"); // 列
         private byte[] TIMES_WRONG = Bytes.toBytes("wrong"); // 列
 
         // ReducerOutV
-        private IntWritable outV = new IntWritable();
-        @Override
-        protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        private DoubleWritable outV = new DoubleWritable();
 
-            int sum = 0;
-            for (IntWritable value : values) {
+        @Override
+        protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+
+            double sum = 0;
+            for (DoubleWritable value : values) {
                 sum += value.get();
             }
 
@@ -83,7 +84,7 @@ public class ProblemAllActJob extends Configured implements Tool {
 
         job.setMapperClass(ProblemAllActMapper.class);
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+        job.setMapOutputValueClass(DoubleWritable.class);
 
         // Hbase提供的工具 自动设置mapreduce提交到hbase里
         TableMapReduceUtil.initTableReducerJob(tableName, ProblemAllActReducer.class, job);

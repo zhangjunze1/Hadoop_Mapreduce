@@ -10,10 +10,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -25,14 +22,14 @@ import java.io.IOException;
 
 public class ProblemWrongActJob extends Configured implements Tool {
 
-    static class ProblemWrongActMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    static class ProblemWrongActMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
 
         // MapOutK
         private Text problem_id = new Text();
 
         // MapOutV
-        private IntWritable labelright = new IntWritable(0);
-        private IntWritable labelwrong = new IntWritable(1);
+        private DoubleWritable labelright = new DoubleWritable(0);
+        private DoubleWritable labelwrong = new DoubleWritable(1);
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -48,20 +45,20 @@ public class ProblemWrongActJob extends Configured implements Tool {
         }
     }
 
-    static class ProblemWrongActReducer extends TableReducer<Text, IntWritable, NullWritable> {
+    static class ProblemWrongActReducer extends TableReducer<Text, DoubleWritable, NullWritable> {
         private byte[] FAMILY = Bytes.toBytes("times"); // 列簇
         private byte[] TIMES_ALL = Bytes.toBytes("all"); // 列
         private byte[] TIMES_RIGHT = Bytes.toBytes("right"); // 列
         private byte[] TIMES_WRONG = Bytes.toBytes("wrong"); // 列
 
         // ReducerOutV
-        private IntWritable outV = new IntWritable();
+        private DoubleWritable outV = new DoubleWritable();
 
         @Override
-        protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
 
-            int sum = 0;
-            for (IntWritable value : values) {
+            double sum = 0;
+            for (DoubleWritable value : values) {
                 sum += value.get();
             }
 
@@ -93,7 +90,7 @@ public class ProblemWrongActJob extends Configured implements Tool {
 
         job.setMapperClass(ProblemWrongActMapper.class);
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+        job.setMapOutputValueClass(DoubleWritable.class);
 
         // Hbase提供的工具 自动设置mapreduce提交到hbase里
         TableMapReduceUtil.initTableReducerJob(tableName, ProblemWrongActReducer.class, job);
