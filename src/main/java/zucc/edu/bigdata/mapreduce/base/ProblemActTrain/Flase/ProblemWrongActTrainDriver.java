@@ -36,8 +36,8 @@ public class ProblemWrongActTrainDriver {
         job.setOutputValueClass(IntWritable.class);
 
         // 6.设置输入路径和输出路径
-        FileInputFormat.setInputPaths(job, new Path(input));
-        FileOutputFormat.setOutputPath(job, new Path(output));
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 7.提交job
         boolean result = job.waitForCompletion(true);
