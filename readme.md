@@ -69,7 +69,10 @@
     (掌握的：格式"U_10429140	堆 复杂度 数据结构 树 二叉树 哈希 排序 B树 向量")
     (会一点的：格式"U_1043017	序列 二叉树 复杂度 树 排序 栈")
     (未掌握的：格式"U_10438365	树 排序 伸展树 二叉树 数据结构 栈 复杂度")
-
++ StudentRightRateJob： problem_activity.json的数据
+    + 表名: "student"
+    + 列簇: "info"
+    + 列 : "all" "right" 学生答题的次数和正确次数
 ## 流程
 -----------
 ### 1 - 2 顺序不可乱
@@ -89,7 +92,7 @@
 9. ProblemInfoJob
 10. ProblemRequistiteJob
 11. StudentConceptJob1
-
+12. StudentRightRateJob
 -------------
 
 ### HBase表
@@ -152,11 +155,13 @@
 <table>
     <caption>student</caption>
     <tr>
-        <td colspan="3" align="center">info</td>    
+        <td colspan="5" align="center">info</td>    
     </tr>
         <tr>
         <td align="center">conceptGrasp</td>
         <td align="center">conceptAlmostGrasp</td>
         <td align="center">conceptNoGrasp</td>
+        <td align="center">all</td>
+        <td align="center">right</td>
    </tr>
 </table>
