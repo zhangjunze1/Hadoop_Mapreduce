@@ -64,15 +64,17 @@ public class CourseJob2 extends Configured implements Tool {
         protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
             double allTimes = 0;
             double count = 0;
-
+            String count1 ="";
+            String allTimes1 ="";
             for (DoubleWritable value : values) {
                 count += 1;
                 allTimes += value.get();
             }
-
+            count1 = Double.toString(count);
+            allTimes1 = Double.toString(allTimes);
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
-            put.addColumn(family,column_problemCnt,Bytes.toBytes(count));
-            put.addColumn(family,column_problemAllTimes,Bytes.toBytes(allTimes));
+            put.addColumn(family,column_problemCnt,Bytes.toBytes(count1));
+            put.addColumn(family,column_problemAllTimes,Bytes.toBytes(allTimes1));
             context.write(NullWritable.get(), put);
         }
     }

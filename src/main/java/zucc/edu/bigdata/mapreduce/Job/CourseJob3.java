@@ -63,13 +63,13 @@ public class CourseJob3 extends Configured implements Tool {
         @Override
         protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
             double rightTimes = 0;
-
+            String rightTimes1 ="";
             for (DoubleWritable value : values) {
                 rightTimes += value.get();
             }
-
+            rightTimes1 = Double.toString(rightTimes);
             Put put = new Put(Bytes.toBytes(String.valueOf(key)));
-            put.addColumn(family, column_problemRightTimes, Bytes.toBytes(rightTimes));
+            put.addColumn(family, column_problemRightTimes, Bytes.toBytes(rightTimes1));
             context.write(NullWritable.get(), put);
         }
     }
