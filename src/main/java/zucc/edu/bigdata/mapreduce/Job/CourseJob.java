@@ -1,5 +1,6 @@
 package zucc.edu.bigdata.mapreduce.Job;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -20,6 +21,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import zucc.edu.bigdata.bean.jsonobject.Course;
+import zucc.edu.bigdata.bean.jsonobject.ProblemBehavior;
 import zucc.edu.bigdata.tools.HbaseClient;
 
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class CourseJob extends Configured implements Tool {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
-            Course course = new Course(value.toString());
+            Course course = JSON.parseObject(value.toString(), Course.class);
             outK.set(course.getCourse_id());
 
             for (String item : course.getItem()) {
@@ -60,7 +62,7 @@ public class CourseJob extends Configured implements Tool {
 
     static class CourseReducer extends TableReducer<Text, DoubleWritable, NullWritable> {
         //
-        private byte[] family = Bytes.toBytes("video");
+        private byte[] family = Bytes.toBytes("info");
 
         private byte[] column_videoCnt = Bytes.toBytes("videoCount");
         private byte[] column_videoDuration = Bytes.toBytes("videoDuration");

@@ -1,5 +1,6 @@
 package zucc.edu.bigdata.mapreduce.Job;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -35,7 +36,7 @@ public class CourseJob2 extends Configured implements Tool {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
-            Course course = new Course(value.toString());
+            Course course = JSON.parseObject(value.toString(), Course.class);
             outK.set(course.getCourse_id());
 
             for (String item : course.getItem()) {
@@ -54,7 +55,7 @@ public class CourseJob2 extends Configured implements Tool {
 
     static class CourseReducer2 extends TableReducer<Text, DoubleWritable, NullWritable> {
 
-        private byte[] family = Bytes.toBytes("problem");
+        private byte[] family = Bytes.toBytes("info");
 
         private byte[] column_problemCnt = Bytes.toBytes("count");
         private byte[] column_problemAllTimes = Bytes.toBytes("allTimes");
